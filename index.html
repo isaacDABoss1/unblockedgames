@@ -14,76 +14,60 @@
             --border: #30363d;
         }
 
-        html, body { height: 100%; margin: 0; padding: 0; overflow-x: hidden; }
+        html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; }
         body { font-family: 'Arial', sans-serif; background: var(--bg-light); color: #333; }
 
-        /* ALGEBRA FRONT PAGE */
+        /* SECTION 1: MATH CAMOUFLAGE */
         #math-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
         .math-container { 
-            max-width: 600px; 
-            background: white; 
-            border: 2px solid #ddd; 
-            padding: 40px; 
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+            max-width: 600px; background: white; border: 2px solid #ddd; 
+            padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
         }
-        .math-input { padding: 12px; width: 80%; margin-bottom: 20px; border: 1px solid #aaa; font-family: 'Courier New', monospace; border-radius: 4px; }
-        .solve-btn { background: var(--math-blue); color: white; border: none; padding: 12px 40px; cursor: pointer; font-weight: bold; border-radius: 4px; transition: 0.3s; }
-        .solve-btn:hover { background: #34495e; }
+        .math-input { padding: 12px; width: 80%; margin-bottom: 20px; border: 1px solid #aaa; font-family: monospace; }
+        .solve-btn { background: var(--math-blue); color: white; border: none; padding: 12px 40px; cursor: pointer; font-weight: bold; border-radius: 4px; }
 
-        /* SECRET GALLERY - SCROLLABLE */
+        /* SECTION 2: SECRET GALLERY (SCROLLABLE) */
         #game-gallery {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--game-bg); color: white; z-index: 100; overflow-y: auto;
         }
         .gallery-header { position: sticky; top: 0; padding: 20px; text-align: center; border-bottom: 1px solid var(--border); background: var(--card); z-index: 101; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; padding: 30px 20px 100px 20px; }
         
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
-            gap: 20px; max-width: 1200px; margin: 0 auto; padding: 30px 20px 100px 20px;
-        }
-
-        .square {
-            background: var(--card); border: 1px solid var(--border); aspect-ratio: 1/1;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border-radius: 12px; cursor: pointer; transition: 0.2s; overflow: hidden;
-            position: relative;
+        .square { 
+            background: var(--card); border: 1px solid var(--border); aspect-ratio: 1/1; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            border-radius: 12px; cursor: pointer; transition: 0.2s; overflow: hidden; position: relative; 
         }
         .square:hover { transform: translateY(-5px); border-color: var(--accent); }
         .square img { width: 100%; height: 100%; object-fit: cover; background: #21262d; }
-        .square h3 { 
-            position: absolute; bottom: 0; width: 100%; margin: 0;
-            background: rgba(0, 0, 0, 0.8); color: white; padding: 5px 0;
-            font-size: 0.8rem; text-align: center; font-family: sans-serif;
-        }
+        .square h3 { position: absolute; bottom: 0; width: 100%; margin: 0; background: rgba(0, 0, 0, 0.8); color: white; padding: 5px 0; font-size: 0.8rem; text-align: center; font-family: sans-serif; }
 
-        /* OVERLAY PLAYER */
+        /* SECTION 3: GAME PLAYER */
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; display: none; z-index: 200; }
-        iframe { width: 100%; height: 100%; border: none; }
-        .panic-btn { position: absolute; top: 10px; right: 10px; background: #ff4444; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 5px; z-index: 201; font-weight: bold; }
+        #game-frame { width: 100%; height: 100%; border: none; }
+
+        /* SECTION 4: FAKE STUDY REDIRECT */
+        #fake-study { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: none; z-index: 300; }
+        #study-frame { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
     <div id="math-page">
         <div class="math-container">
-            <h1 style="color: var(--math-blue); font-size: 1.8rem;">Module 2: Linear Equations & Algebra</h1>
-            <p style="color: #666;">Student Revision Portal | Term 1 Assessment</p>
-            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-            <p>Solve for <i>y</i> when <i>x = 3</i> in the linear equation <i>y = 2x + 3</i>:</p>
-            
-            <input type="text" id="math-box" class="math-input" placeholder="Enter solution...">
+            <h1 style="color: var(--math-blue);">Module 2: Linear Equations</h1>
+            <p>Solve for <i>y</i> when <i>x = 3</i> in <i>y = 2x + 3</i>:</p>
+            <input type="text" id="math-box" class="math-input" placeholder="y = ...">
             <br>
-            <button class="solve-btn" onclick="checkMath()">Submit & Verify Answer</button>
-            
-            <p style="margin-top: 30px; font-size: 0.75rem; color: #aaa;">Digital Textbook &copy; 2024 Education Board</p>
+            <button class="solve-btn" onclick="checkMath()">Submit Answer</button>
         </div>
     </div>
 
     <div id="game-gallery">
         <div class="gallery-header">
-            <button onclick="closeGallery()" style="background: #333; color: white; border: none; padding: 8px 15px; cursor: pointer; float: left; border-radius: 4px;">← Back to Algebra</button>
-            <h2 style="margin: 0; display: inline-block; font-family: sans-serif;">Internal Resources</h2>
+            <button onclick="closeGallery()" style="background: #333; color: white; border: none; padding: 8px 15px; cursor: pointer; float: left; border-radius: 4px;">← Back</button>
+            <h2 style="margin: 0; display: inline-block;">Internal Resources</h2>
         </div>
         <div class="grid">
             <div class="square" onclick="play('https://play2048.co/')"><img src="https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?w=200"><h3>2048</h3></div>
@@ -96,56 +80,52 @@
             <div class="square" onclick="play('https://v6p9d9t4.ssl.hwcdn.net/html/1453/index.html')"><img src="https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=200"><h3>Slope</h3></div>
             <div class="square" onclick="play('https://3kh0.github.io/projects/retro-bowl/')"><img src="https://images.unsplash.com/photo-1566577739112-5180d4bf9390?w=200"><h3>Retro Bowl</h3></div>
             <div class="square" onclick="play('https://3kh0.github.io/projects/drift-hunters/')"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=200"><h3>Drift Hunters</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/subway-surfers/')"><img src="https://images.unsplash.com/photo-1519669556878-63bdad8a1a49?w=200"><h3>Subway Surfer</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/drive-mad/')"><img src="https://images.unsplash.com/photo-1599588127264-ddf7d5a552ed?w=200"><h3>Drive Mad</h3></div>
+            <div class="square" onclick="play('https://3kh0.github.io/projects/subway-surfers/')"><img src="https://images.unsplash.com/photo-1519669556878-63bdad8a1a49?w=200"><h3>Subway Surfers</h3></div>
+            <div class="square" onclick="play('https://bitlifeonline.github.io/')"><img src="https://images.unsplash.com/photo-1533073356964-74857c68b7b9?w=200"><h3>BitLife</h3></div>
             <div class="square" onclick="play('https://3kh0.github.io/projects/geometry-dash/')"><img src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?w=200"><h3>Geo Dash</h3></div>
+            <div class="square" onclick="play('https://3kh0.github.io/projects/smash-karts/')"><img src="https://images.unsplash.com/photo-1523875194681-bedd468c58bf?w=200"><h3>Smash Karts</h3></div>
+            <div class="square" onclick="play('https://3kh0.github.io/projects/drive-mad/')"><img src="https://images.unsplash.com/photo-1599588127264-ddf7d5a552ed?w=200"><h3>Drive Mad</h3></div>
+            <div class="square" onclick="play('https://3kh0.github.io/projects/tunnel-rush/')"><img src="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=200"><h3>Tunnel Rush</h3></div>
             <div class="square" onclick="play('https://3kh0.github.io/projects/paper-io-2/')"><img src="https://images.unsplash.com/photo-1616440347437-b1c73416efc2?w=200"><h3>Paper.io 2</h3></div>
+            <div class="square" onclick="play('https://3kh0.github.io/projects/crossy-road/')"><img src="https://images.unsplash.com/photo-1553481235-90802152740e?w=200"><h3>Crossy Road</h3></div>
+            <div class="square" onclick="play('https://3kh0.github.io/projects/tiny-fishing/')"><img src="https://images.unsplash.com/photo-1521331869997-29e247a6214a?w=200"><h3>Tiny Fishing</h3></div>
+            <div class="square" onclick="play('https://3kh0.github.io/projects/cluster-rush/')"><img src="https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=200"><h3>Cluster Rush</h3></div>
         </div>
     </div>
 
-    <div id="overlay">
-        <button class="panic-btn" onclick="panic()">PANIC (ESC)</button>
-        <iframe id="game-frame"></iframe>
-    </div>
+    <div id="overlay"><iframe id="game-frame"></iframe></div>
+    <div id="fake-study"><iframe id="study-frame" src="about:blank"></iframe></div>
 
     <script>
-        // THE PASSWORD KEY
         const SECRET_CODE = "y=3x+9";
+        const PANIC_SITE = "https://en.wikipedia.org/wiki/Linear_algebra";
 
         function checkMath() {
-            let val = document.getElementById('math-box').value.trim();
-            if (val === SECRET_CODE) {
-                openGallery();
-            } else {
-                // Generic error that sounds like a real online quiz
-                alert("Validation failed: Please ensure the equation is balanced correctly.");
-            }
+            if (document.getElementById('math-box').value.trim() === SECRET_CODE) { 
+                openGallery(); 
+            } else { alert("Validation failed. Check equation parameters."); }
         }
 
-        function openGallery() { 
-            document.getElementById('game-gallery').style.display = 'block'; 
-            document.body.style.overflow = 'hidden'; 
-        }
-
-        function closeGallery() { 
-            document.getElementById('game-gallery').style.display = 'none'; 
-            document.body.style.overflow = 'auto'; 
-        }
-
+        function openGallery() { document.getElementById('game-gallery').style.display = 'block'; }
+        function closeGallery() { document.getElementById('game-gallery').style.display = 'none'; }
         function play(url) {
             document.getElementById('game-frame').src = url;
             document.getElementById('overlay').style.display = 'block';
         }
 
-        function panic() {
-            document.getElementById('game-frame').src = '';
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('game-gallery').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        // Panic Key ESC
-        window.addEventListener('keydown', function(e) { if (e.key === "Escape") { panic(); } });
+        // PANIC & RETURN LOGIC
+        window.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") { 
+                document.getElementById('study-frame').src = PANIC_SITE;
+                document.getElementById('fake-study').style.display = 'block';
+                // Silence game audio by removing source (standard practice for safety)
+                document.getElementById('game-frame').src = document.getElementById('game-frame').src; 
+            }
+            if (e.key === "`" || e.key === "~") {
+                document.getElementById('fake-study').style.display = 'none';
+                document.getElementById('study-frame').src = 'about:blank';
+            }
+        });
     </script>
 </body>
 </html>
