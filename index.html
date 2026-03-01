@@ -3,133 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Year 10 Advanced Mathematics</title>
+    <title>Google Classroom</title>
     <style>
-        :root {
-            --math-blue: #2c3e50;
-            --bg-light: #fdfdfd;
-            --game-bg: #0d1117;
-            --card: #161b22;
-            --accent: #58a6ff;
-            --border: #30363d;
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #ffffff;
+            color: #3c4043;
         }
 
-        html, body { height: 100%; margin: 0; padding: 0; overflow-x: hidden; }
-        body { font-family: 'Times New Roman', serif; background: var(--bg-light); color: #333; }
-
-        /* MATH FRONT PAGE */
-        #math-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
-        .math-container { max-width: 600px; background: white; border: 1px solid #ccc; padding: 40px; box-shadow: 8px 8px 0px #eee; }
-        .math-input { padding: 12px; width: 80%; margin-bottom: 20px; border: 1px solid #aaa; }
-        .solve-btn { background: #f0f0f0; border: 1px solid #999; padding: 10px 40px; cursor: pointer; font-weight: bold; }
-
-        /* SECRET GALLERY - SCROLLABLE */
-        #game-gallery {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--game-bg); color: white; z-index: 100; overflow-y: auto;
-        }
-        .gallery-header { position: sticky; top: 0; padding: 20px; text-align: center; border-bottom: 1px solid var(--border); background: var(--card); z-index: 101; }
-        
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
-            gap: 20px; max-width: 1200px; margin: 0 auto; padding: 30px 20px 100px 20px;
+        /* Top Navigation Bar */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-bottom: 1px solid #e0e0e0;
+            height: 48px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 100;
         }
 
-        .square {
-            background: var(--card); border: 1px solid var(--border); aspect-ratio: 1/1;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border-radius: 12px; cursor: pointer; transition: 0.2s; overflow: hidden;
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .header-title {
+            font-size: 22px;
+            color: #5f6368;
+            font-weight: 400;
+        }
+
+        /* Classroom Grid Layout */
+        .main-content {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .class-card {
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 280px;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
             position: relative;
         }
-        .square:hover { transform: translateY(-5px); border-color: var(--accent); }
-        .square img { width: 100%; height: 100%; object-fit: cover; background: #21262d; }
-        .square h3 { 
-            position: absolute; bottom: 0; width: 100%; margin: 0;
-            background: rgba(0, 0, 0, 0.7); color: white; padding: 5px 0;
-            font-size: 0.8rem; text-align: center; font-family: sans-serif;
+
+        .card-top {
+            height: 100px;
+            background-size: cover;
+            background-position: center;
+            padding: 16px;
+            color: white;
+            position: relative;
         }
 
-        /* OVERLAY PLAYER */
-        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; display: none; z-index: 200; }
-        iframe { width: 100%; height: 100%; border: none; }
-        .panic-btn { position: absolute; top: 10px; right: 10px; background: #ff4444; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 5px; z-index: 201; font-weight: bold; }
+        /* REAL GAME IMAGES MASKED AS CLASSES */
+        /* Minecraft disguised as Engineering */
+        .game-1 { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://upload.wikimedia.org/wikipedia/en/5/51/Minecraft_cover.png'); }
+        /* Among Us disguised as Psychology */
+        .game-2 { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://upload.wikimedia.org/wikipedia/en/a/a5/Among_Us_Icon.png'); }
+        /* Roblox disguised as Game Theory */
+        .game-3 { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://upload.wikimedia.org/wikipedia/commons/3/3a/Roblox_player_icon_black.svg'); background-color: #222; }
+
+        .class-name {
+            font-size: 20px;
+            margin: 0;
+            font-weight: 500;
+            text-decoration: underline;
+        }
+
+        .section-name {
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            position: absolute;
+            right: 16px;
+            top: 70px;
+            border: 2px solid white;
+            background-color: #ddd;
+        }
+
+        .card-bottom {
+            flex-grow: 1;
+            padding: 16px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+        }
     </style>
 </head>
 <body>
 
-    <div id="math-page">
-        <div class="math-container">
-            <h1 style="color: var(--math-blue);">Unit 4: Advanced Calculus</h1>
-            <p>Verification Portal: Year 10 Mathematics</p>
-            <input type="text" class="math-input" placeholder="y = mx + b">
-            <br>
-            <button class="solve-btn" onclick="checkPassword()">Solve & Verify</button>
+    <header class="header">
+        <div class="header-left">
+            <span style="font-size:24px; color:#5f6368; cursor:pointer;">&#9776;</span>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/Google_Classroom_Logo.png" class="logo-img" alt="Google Classroom">
+            <span class="header-title">Google Classroom</span>
         </div>
-    </div>
+    </header>
 
-    <div id="game-gallery">
-        <div class="gallery-header">
-            <button onclick="closeGallery()" style="background: #333; color: white; border: none; padding: 8px 15px; cursor: pointer; float: left; border-radius: 4px;">← Back</button>
-            <h2 style="margin: 0; display: inline-block; font-family: sans-serif;">Research Archive</h2>
-        </div>
-        <div class="grid">
-            <div class="square" onclick="play('https://play2048.co/')"><img src="https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?w=200"><h3>2048</h3></div>
-            <div class="square" onclick="play('https://mathadventure1.github.io/sm64/sm64/index.html')"><img src="https://images.unsplash.com/photo-1612404730960-5c71577fca16?w=200"><h3>Mario 64</h3></div>
-            <div class="square" onclick="play('https://classic.minecraft.net/')"><img src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=200"><h3>Minecraft</h3></div>
-            <div class="square" onclick="play('https://chvin.github.io/react-tetris/')"><img src="https://images.unsplash.com/photo-1585338663460-398d86f78479?w=200"><h3>Tetris</h3></div>
-            <div class="square" onclick="play('https://ubg77.github.io/edit/gunspin/')"><img src="https://images.unsplash.com/photo-1595231712325-9fecd0e408ec?w=200"><h3>Gunspin</h3></div>
-            <div class="square" onclick="play('https://ovogame.github.io/')"><img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=200"><h3>OvO</h3></div>
-            <div class="square" onclick="play('https://1v1.lol/')"><img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=200"><h3>1v1.LOL</h3></div>
-            <div class="square" onclick="play('https://v6p9d9t4.ssl.hwcdn.net/html/1453/index.html')"><img src="https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=200"><h3>Slope</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/retro-bowl/')"><img src="https://images.unsplash.com/photo-1566577739112-5180d4bf9390?w=200"><h3>Retro Bowl</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/drift-hunters/')"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=200"><h3>Drift Hunters</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/subway-surfers/')"><img src="https://images.unsplash.com/photo-1519669556878-63bdad8a1a49?w=200"><h3>Subway Surfer</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/drive-mad/')"><img src="https://images.unsplash.com/photo-1599588127264-ddf7d5a552ed?w=200"><h3>Drive Mad</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/geometry-dash/')"><img src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?w=200"><h3>Geo Dash</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/paper-io-2/')"><img src="https://images.unsplash.com/photo-1616440347437-b1c73416efc2?w=200"><h3>Paper.io 2</h3></div>
-        </div>
-    </div>
+    <main class="main-content">
+        
+        <a href="https://minecraft.net" class="class-card">
+            <div class="card-top game-1">
+                <h2 class="class-name">Structural Engineering</h2>
+                <div class="section-name">Period 1 - Building Blocks</div>
+                <div class="avatar"></div>
+            </div>
+            <div class="card-bottom"></div>
+        </a>
 
-    <div id="overlay">
-        <button class="panic-btn" onclick="panic()">PANIC (ESC)</button>
-        <iframe id="game-frame"></iframe>
-    </div>
+        <a href="#" class="class-card">
+            <div class="card-top game-2">
+                <h2 class="class-name">Social Psychology</h2>
+                <div class="section-name">Period 3 - Social Deduction</div>
+                <div class="avatar"></div>
+            </div>
+            <div class="card-bottom"></div>
+        </a>
 
-    <script>
-        // CHANGE YOUR PASSWORD HERE
-        const SECRET_CODE = "1234";
+        <a href="#" class="class-card">
+            <div class="card-top game-3">
+                <h2 class="class-name">Game Theory & Logic</h2>
+                <div class="section-name">Period 4 - User Development</div>
+                <div class="avatar"></div>
+            </div>
+            <div class="card-bottom"></div>
+        </a>
 
-        function checkPassword() {
-            let userInput = prompt("Enter verification code:");
-            if (userInput === SECRET_CODE) {
-                openGallery();
-            } else {
-                alert("Incorrect verification code. Please try again.");
-            }
-        }
+    </main>
 
-        function openGallery() { 
-            document.getElementById('game-gallery').style.display = 'block'; 
-            document.body.style.overflow = 'hidden'; 
-        }
-
-        function closeGallery() { 
-            document.getElementById('game-gallery').style.display = 'none'; 
-            document.body.style.overflow = 'auto'; 
-        }
-
-        function play(url) {
-            document.getElementById('game-frame').src = url;
-            document.getElementById('overlay').style.display = 'block';
-        }
-
-        function panic() {
-            document.getElementById('game-frame').src = '';
-            document.getElementById('overlay').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        window.addEventListener('keydown', function(e) { if (e.key === "Escape") { panic(); } });
-    </script>
 </body>
 </html>
