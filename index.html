@@ -39,15 +39,13 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             border-radius: 12px; cursor: pointer; transition: 0.2s; overflow: hidden; position: relative; 
         }
-        .square:hover { transform: translateY(-5px); border-color: var(--accent); }
-        .square img { width: 100%; height: 100%; object-fit: cover; background: #21262d; }
+        .square img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
         .square h3 { position: absolute; bottom: 0; width: 100%; margin: 0; background: rgba(0, 0, 0, 0.8); color: white; padding: 5px 0; font-size: 0.8rem; text-align: center; }
 
         /* OVERLAYS */
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; display: none; z-index: 200; }
         #game-frame { width: 100%; height: 100%; border: none; }
 
-        /* FAKE TRANSUM REDIRECT */
         #fake-study { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: none; z-index: 300; }
         #study-frame { width: 100%; height: 100%; border: none; }
     </style>
@@ -61,7 +59,6 @@
             <input type="text" id="math-box" class="math-input" placeholder="y = ...">
             <br>
             <button class="solve-btn" onclick="checkMath()">Submit Answer</button>
-            <p style="margin-top: 20px; font-size: 0.8rem; color: #999;">Reference: Transum Algebra Level 1</p>
         </div>
     </div>
 
@@ -95,42 +92,57 @@
     </div>
 
     <div id="overlay"><iframe id="game-frame"></iframe></div>
-    <div id="fake-study"><iframe id="study-frame" src="about:blank"></iframe></div>
+    <div id="fake-study"><iframe id="study-frame"></iframe></div>
 
     <script>
-        const SECRET_CODE = "1234";
-        // Transum Equations Level 1 Page
+        const SECRET_CODE = "y=3x+9";
         const PANIC_SITE = "https://www.transum.org/Software/SW/Starter_of_the_day/Students/Equations.asp?Level=1";
 
         function checkMath() {
             if (document.getElementById('math-box').value.trim() === SECRET_CODE) { 
                 openGallery(); 
-            } else { alert("Validation failed. Check your Algebra steps."); }
+            } else { alert("Validation failed."); }
         }
 
-        function openGallery() { document.getElementById('game-gallery').style.display = 'block'; }
+        function openGallery() { document.getElementById('game-gallery').style.display = 'block'; window.focus(); }
         function closeGallery() { document.getElementById('game-gallery').style.display = 'none'; }
+        
         function play(url) {
             document.getElementById('game-frame').src = url;
             document.getElementById('overlay').style.display = 'block';
+            // Give the focus back to the main window briefly
+            window.focus();
         }
 
+        function triggerPanic() {
+            document.getElementById('study-frame').src = PANIC_SITE;
+            document.getElementById('fake-study').style.display = 'block';
+            let game = document.getElementById('game-frame');
+            game.src = game.src; // Mutes sound by reloading
+        }
+
+        function triggerReturn() {
+            document.getElementById('fake-study').style.display = 'none';
+            document.getElementById('study-frame').src = '';
+        }
+
+        // LISTEN FOR KEYS EVERYWHERE
         window.addEventListener('keydown', function(e) {
-            // PANIC TO TRANSUM (ESC)
-            if (e.key === "Escape") { 
-                document.getElementById('study-frame').src = PANIC_SITE;
-                document.getElementById('fake-study').style.display = 'block';
-                // Reload game frame to stop sound
-                let game = document.getElementById('game-frame');
-                game.src = game.src; 
+            // PANIC: ESC or `
+            if (e.key === "Escape" || e.key === "`" || e.key === "~") { 
+                triggerPanic();
             }
-            // RETURN FROM TRANSUM (~)
-            if (e.key === "`" || e.key === "~") {
-                document.getElementById('fake-study').style.display = 'none';
-                document.getElementById('study-frame').src = 'about:blank';
+            // RETURN: Shift + R
+            if (e.shiftKey && e.key === "R") {
+                triggerReturn();
             }
         });
+
+        // SPECIAL TRICK: If the iframe is clicked, it still tries to listen to the parent
+        window.onblur = function() {
+            // This reminds the browser that even if you're in the game, the parent exists
+            console.log("Game focused. Ready for Panic Key.");
+        };
     </script>
 </body>
 </html>
-
