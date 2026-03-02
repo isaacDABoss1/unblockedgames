@@ -17,34 +17,20 @@
         html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; }
         body { font-family: 'Arial', sans-serif; background: var(--bg-light); color: #333; }
 
-        /* THE TOGGLE ZONE - Always on top */
-        #panic-zone {
-            position: fixed; top: 0; right: 0; width: 25px; height: 25px;
-            z-index: 2000; background: transparent; 
-        }
+        /* PANIC TOGGLE ZONE */
+        #panic-zone { position: fixed; top: 0; right: 0; width: 25px; height: 25px; z-index: 5000; background: transparent; }
 
         /* FRONT PAGE */
         #math-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
-        .math-container { 
-            max-width: 600px; background: white; border: 2px solid #ddd; 
-            padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-        }
-        .math-input { padding: 12px; width: 80%; margin-bottom: 20px; border: 1px solid #aaa; font-family: monospace; }
+        .math-container { max-width: 600px; background: white; border: 2px solid #ddd; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .math-input { padding: 12px; width: 80%; margin-bottom: 20px; border: 1px solid #aaa; font-family: monospace; text-align: center; }
         .solve-btn { background: var(--math-blue); color: white; border: none; padding: 12px 40px; cursor: pointer; font-weight: bold; border-radius: 4px; }
 
         /* GALLERY */
-        #game-gallery {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--game-bg); color: white; z-index: 100; overflow-y: auto;
-        }
+        #game-gallery { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--game-bg); color: white; z-index: 100; overflow-y: auto; }
         .gallery-header { position: sticky; top: 0; padding: 20px; text-align: center; border-bottom: 1px solid var(--border); background: var(--card); z-index: 101; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; padding: 30px 20px 100px 20px; }
-        
-        .square { 
-            background: var(--card); border: 1px solid var(--border); aspect-ratio: 1/1; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            border-radius: 12px; cursor: pointer; transition: 0.2s; overflow: hidden; position: relative; 
-        }
+        .square { background: var(--card); border: 1px solid var(--border); aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 12px; cursor: pointer; transition: 0.2s; overflow: hidden; position: relative; }
         .square img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
         .square h3 { position: absolute; bottom: 0; width: 100%; margin: 0; background: rgba(0, 0, 0, 0.8); color: white; padding: 5px 0; font-size: 0.8rem; text-align: center; }
 
@@ -52,7 +38,11 @@
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; display: none; z-index: 200; }
         #game-frame { width: 100%; height: 100%; border: none; }
 
-        #fake-study { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: none; z-index: 300; }
+        /* CONTROLS */
+        .game-controls { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 250; }
+        .control-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 15px; border-radius: 20px; cursor: pointer; backdrop-filter: blur(5px); }
+        
+        #fake-study { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: none; z-index: 3000; }
         #study-frame { width: 100%; height: 100%; border: none; }
     </style>
 </head>
@@ -62,92 +52,91 @@
 
     <div id="math-page">
         <div class="math-container">
-            <h1 style="color: var(--math-blue);">Module 2: Linear Equations</h1>
-            <p>Solve for <i>y</i> when <i>x = 3</i> in <i>y = 2x + 3</i>:</p>
-            <input type="text" id="math-box" class="math-input" placeholder="y = ...">
+            <h1>Module 2: Linear Equations</h1>
+            <p>Enter Student ID to continue:</p>
+            <input type="password" id="math-box" class="math-input" placeholder="####">
             <br>
-            <button class="solve-btn" onclick="checkMath()">Submit Answer</button>
+            <button class="solve-btn" onclick="checkMath()">Login</button>
         </div>
     </div>
 
     <div id="game-gallery">
         <div class="gallery-header">
-            <button onclick="closeGallery()" style="background: #333; color: white; border: none; padding: 8px 15px; cursor: pointer; float: left; border-radius: 4px;">← Exit</button>
-            <h2 style="margin: 0; display: inline-block;">Internal Resources</h2>
+            <button onclick="logout()" style="background: #333; color: white; border: none; padding: 8px 15px; cursor: pointer; float: left; border-radius: 4px;">← Logout & Clear</button>
+            <h2 style="margin: 0; display: inline-block;">Algebra Resources</h2>
         </div>
         <div class="grid">
             <div class="square" onclick="play('https://play2048.co/')"><img src="https://images.unsplash.com/photo-1628155930542-3c7a64e2c833?w=200"><h3>2048</h3></div>
-            <div class="square" onclick="play('https://mathadventure1.github.io/sm64/sm64/index.html')"><img src="https://images.unsplash.com/photo-1612404730960-5c71577fca16?w=200"><h3>Mario 64</h3></div>
             <div class="square" onclick="play('https://classic.minecraft.net/')"><img src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=200"><h3>Minecraft</h3></div>
-            <div class="square" onclick="play('https://ubg77.github.io/edit/gunspin/')"><img src="https://images.unsplash.com/photo-1595231712325-9fecd0e408ec?w=200"><h3>Gunspin</h3></div>
-            <div class="square" onclick="play('https://ovogame.github.io/')"><img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=200"><h3>OvO</h3></div>
-            <div class="square" onclick="play('https://1v1.lol/')"><img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=200"><h3>1v1.LOL</h3></div>
-            <div class="square" onclick="play('https://v6p9d9t4.ssl.hwcdn.net/html/1453/index.html')"><img src="https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=200"><h3>Slope</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/retro-bowl/')"><img src="https://images.unsplash.com/photo-1566577739112-5180d4bf9390?w=200"><h3>Retro Bowl</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/drift-hunters/')"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=200"><h3>Drift Hunters</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/subway-surfers/')"><img src="https://images.unsplash.com/photo-1519669556878-63bdad8a1a49?w=200"><h3>Subway Surfers</h3></div>
-            <div class="square" onclick="play('https://bitlifeonline.github.io/')"><img src="https://images.unsplash.com/photo-1533073356964-74857c68b7b9?w=200"><h3>BitLife</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/geometry-dash/')"><img src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?w=200"><h3>Geo Dash</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/smash-karts/')"><img src="https://images.unsplash.com/photo-1523875194681-bedd468c58bf?w=200"><h3>Smash Karts</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/drive-mad/')"><img src="https://images.unsplash.com/photo-1599588127264-ddf7d5a552ed?w=200"><h3>Drive Mad</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/tunnel-rush/')"><img src="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?w=200"><h3>Tunnel Rush</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/paper-io-2/')"><img src="https://images.unsplash.com/photo-1616440347437-b1c73416efc2?w=200"><h3>Paper.io 2</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/crossy-road/')"><img src="https://images.unsplash.com/photo-1553481235-90802152740e?w=200"><h3>Crossy Road</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/tiny-fishing/')"><img src="https://images.unsplash.com/photo-1521331869997-29e247a6214a?w=200"><h3>Tiny Fishing</h3></div>
-            <div class="square" onclick="play('https://3kh0.github.io/projects/cluster-rush/')"><img src="https://images.unsplash.com/photo-1580674684081-7617fbf3d745?w=200"><h3>Cluster Rush</h3></div>
+            
+            <div class="square" onclick="play('https://ubg77.github.io/edit/moto-x3m/')"><img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=200"><h3>Moto X3M</h3></div>
+            <div class="square" onclick="play('https://webglmath.github.io/drive-mad/')"><img src="https://images.unsplash.com/photo-1599588127264-ddf7d5a552ed?w=200"><h3>Drive Mad</h3></div>
+            <div class="square" onclick="play('https://webglmath.github.io/gunspin/')"><img src="https://images.unsplash.com/photo-1595231712325-9fecd0e408ec?w=200"><h3>Gunspin</h3></div>
+            
+            <div class="square" onclick="play('https://tetris.com/play-tetris')"><img src="https://images.unsplash.com/photo-1585338663460-398d86f78479?w=200"><h3>Tetris</h3></div>
+            <div class="square" onclick="play('https://v6p9d9t4.ssl.hwcdn.net/html/1513/index.html')"><img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=200"><h3>OvO</h3></div>
         </div>
     </div>
 
-    <div id="overlay"><iframe id="game-frame"></iframe></div>
+    <div id="overlay">
+        <iframe id="game-frame" allowfullscreen></iframe>
+        <div class="game-controls">
+            <button class="control-btn" onclick="toggleFullScreen()">⛶ Full Screen</button>
+            <button class="control-btn" onclick="exitGame()">✕ Close</button>
+        </div>
+    </div>
+
     <div id="fake-study"><iframe id="study-frame"></iframe></div>
 
     <script>
         const SECRET_CODE = "1234";
         const PANIC_SITE = "https://www.transum.org/Software/SW/Starter_of_the_day/Students/Equations.asp?Level=1";
-        const ORIGINAL_TITLE = "Year 10 Algebra Fundamentals";
-        const STEALTH_TITLE = "Algebra Quiz - Transum";
-
+        
         let isPanicked = false;
         let isGalleryOpen = false;
 
         function checkMath() {
-            if (document.getElementById('math-box').value.trim() === SECRET_CODE) { 
+            if (document.getElementById('math-box').value === SECRET_CODE) { 
                 openGallery(); 
-            } else { alert("Validation failed."); }
+            } else { alert("Incorrect Student ID."); }
         }
 
         function openGallery() { 
             isGalleryOpen = true;
             document.getElementById('game-gallery').style.display = 'block'; 
-            document.title = STEALTH_TITLE;
+            document.title = "Algebra Quiz - Transum";
         }
 
-        function closeGallery() { 
-            isGalleryOpen = false;
-            document.getElementById('game-gallery').style.display = 'none'; 
-            document.title = ORIGINAL_TITLE;
+        function logout() {
+            // Wipes the session and reloads to the front page
+            window.location.reload();
         }
-        
+
         function play(url) {
             document.getElementById('game-frame').src = url;
             document.getElementById('overlay').style.display = 'block';
         }
 
-        // THE TOGGLE MASTER FUNCTION
-        function togglePanic() {
-            // Only toggle if the vault is actually unlocked
-            if (!isGalleryOpen) return;
+        function exitGame() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('game-frame').src = '';
+        }
 
+        function toggleFullScreen() {
+            let elem = document.getElementById("game-frame");
+            if (elem.requestFullscreen) { elem.requestFullscreen(); }
+            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+        }
+
+        function togglePanic() {
+            if (!isGalleryOpen) return;
             if (!isPanicked) {
-                // HIDE GAMES -> SHOW TRANSUM
                 document.getElementById('study-frame').src = PANIC_SITE;
                 document.getElementById('fake-study').style.display = 'block';
-                // Reload game to stop sounds
-                let game = document.getElementById('game-frame');
-                if (game.src) game.src = game.src; 
+                let gf = document.getElementById('game-frame'); 
+                if (gf.src) gf.src = gf.src; 
                 isPanicked = true;
             } else {
-                // HIDE TRANSUM -> SHOW GAMES
                 document.getElementById('fake-study').style.display = 'none';
                 document.getElementById('study-frame').src = '';
                 isPanicked = false;
@@ -155,16 +144,9 @@
         }
 
         window.addEventListener('keydown', function(e) {
-            // Panic keys (ESC, `)
-            if (e.key === "Escape" || e.key === "`" || e.key === "~") { 
-                if (!isPanicked) togglePanic(); 
-            }
-            // Return keys (Shift + R)
-            if (e.shiftKey && e.key === "R") {
-                if (isPanicked) togglePanic();
-            }
+            if (e.key === "Escape" || e.key === "`" || e.key === "~") { if (!isPanicked) togglePanic(); }
+            if (e.shiftKey && e.key === "R") { if (isPanicked) togglePanic(); }
         });
     </script>
 </body>
 </html>
-
